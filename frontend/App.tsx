@@ -10,89 +10,87 @@ const Stack = createNativeStackNavigator();
 
 function HomeScreen({ navigation }) {
   return (
-    <View className="bg-green-400">
+    <View>
       <View className="h-full bg-white">
-        <View className="flex justify-end mt-10 mb-10 h-9/10 bg-orange-500">
-          <View className="bg-slate-200 h-8/10 rounded-t-xl">
-            <View>
-              <Text className="text-cyan-600 text-4xl text-center mt-16">
-                wymyś
-                <Text className="text-cyan-400">ludki</Text>
-              </Text>
+        <View className="bg-slate-200 h-8/10 rounded-t-xl">
+          <View>
+            <Text className="text-cyan-600 text-4xl text-center mt-16">
+              wymyś
+              <Text className="text-cyan-400">ludki</Text>
+            </Text>
+          </View>
+          {/* main */}
+          <View
+            className="flex flex-row justify-between items-center align-middle bg-slate-50 h-[20%] mt-7 w-10/12 self-center rounded-lg border-sky-300 px-4"
+            style={{ borderWidth: 0.5 }}
+          >
+            <View className="flex flex-col">
+              <Image
+                source={require("./assets/activities_thin.svg")}
+                style={{
+                  width: 40,
+                  height: 40,
+                  marginTop: 8,
+                }}
+              />
+              <Text className="text-xs text-gray-500">Activities</Text>
             </View>
-            {/* main */}
-            <View
-              className="flex flex-row justify-between items-center align-middle bg-slate-50 h-[20%] mt-7 w-10/12 self-center rounded-lg border-sky-300 px-4"
-              style={{ borderWidth: 0.5 }}
-            >
-              <View className="flex flex-col">
-                <Image
-                  source={require("./assets/activities_thin.svg")}
-                  style={{
-                    width: 40,
-                    height: 40,
-                    marginTop: 8,
-                  }}
-                />
-                <Text className="text-xs text-gray-500">Activities</Text>
-              </View>
-              <View className="flex flex-col">
-                <Image
-                  source={require("./assets/flag_check_thin.svg")}
-                  style={{
-                    width: 40,
-                    height: 40,
-                    marginTop: 8,
-                  }}
-                />
-                <Text className="text-xs text-gray-500">Milestones</Text>
-              </View>
-              <View className="flex flex-col">
-                <Image
-                  source={require("./assets/share_eta_thin.svg")}
-                  style={{
-                    width: 40,
-                    height: 40,
-                    marginTop: 8,
-                  }}
-                />
-                <Text className="text-xs text-gray-500">Tracker</Text>
-              </View>
-              <View className="flex flex-col">
-                <Image
-                  source={require("./assets/calendar_thin.svg")}
-                  style={{
-                    width: 40,
-                    height: 40,
-                    marginTop: 8,
-                  }}
-                />
-                <Text className="text-xs text-gray-500">Calendar</Text>
-              </View>
+            <View className="flex flex-col">
+              <Image
+                source={require("./assets/flag_check_thin.svg")}
+                style={{
+                  width: 40,
+                  height: 40,
+                  marginTop: 8,
+                }}
+              />
+              <Text className="text-xs text-gray-500">Milestones</Text>
             </View>
-            {/* activity of the day */}
-            <View className="flex mt-4 self-center w-11/12">
-              <Text className="text-xl">Aktywność Dnia</Text>
-              <View className="flex flex-row justify-between max-h-28 bg-slate-50 p-2 rounded shadow-md shadow-gray-600">
-                <View className="bg-sky-700 w-2/6 h-full mr-2" />
-                <View className="h-28 w-full">
-                  <Text className="">Lorem Ipsum Title</Text>
-                  <Text className="w-4/6 h-28 text-gray-500 text-xs">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Earum distinctio nam dicta excepturi adipisci maiores, fuga
-                    veritatis atque quo ex. Maxime nulla ut blanditiis
-                    reiciendis
-                  </Text>
-                </View>
+            <View className="flex flex-col">
+              <Image
+                source={require("./assets/share_eta_thin.svg")}
+                style={{
+                  width: 40,
+                  height: 40,
+                  marginTop: 8,
+                }}
+              />
+              <Text className="text-xs text-gray-500">Tracker</Text>
+            </View>
+            <View className="flex flex-col">
+              <Image
+                source={require("./assets/calendar_thin.svg")}
+                style={{
+                  width: 40,
+                  height: 40,
+                  marginTop: 8,
+                }}
+              />
+              <Text className="text-xs text-gray-500">Calendar</Text>
+            </View>
+          </View>
+          {/* activity of the day */}
+          <View className="flex mt-4 self-center w-11/12">
+            <Text className="text-xl">Aktywność Dnia</Text>
+            <View className="flex flex-row justify-between max-h-28 bg-slate-50 p-2 rounded shadow-md shadow-gray-600">
+              <View className="bg-sky-700 w-2/6 h-full mr-2" />
+              <View className="h-28 w-full">
+                <Text className="">Lorem Ipsum Title</Text>
+                <Text className="w-4/6 h-28 text-gray-500 text-xs">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum
+                  distinctio nam dicta excepturi adipisci maiores, fuga
+                  veritatis atque quo ex. Maxime nulla ut blanditiis reiciendis
+                </Text>
               </View>
             </View>
           </View>
+          <Button
+            title="Go to Subscribe"
+            onPress={() => navigation.navigate("Subscribe")}
+          />
+          <BottomNavbar navigation={navigation} />
         </View>
       </View>
-      <Button
-        title="Go to Subscribe"
-        onPress={() => navigation.navigate("Subscribe")}
-      />
     </View>
   );
 }

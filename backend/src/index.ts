@@ -1,10 +1,23 @@
-import  express, {Request, Response}  from "express";
+import { createServer } from "http";
 
-const app = express()
+import { appServiceBuilder } from "app/app-services";
+import logger from "app/utils/logger";
 
-app.listen(1447, ()=>console.log("listining"))
+async function main() {
+  const { appConfig, storages } = await appServiceBuilder();
 
-app.get('/', (req: Request, res: Response) => {
-    console.log('req')
-    res.send('<h1 style="text-align: center; font-size:3rem;">Hi!</h1>')
-})
+  let server = createServer();
+  server.listen(appConfig.Port, () => {
+    logger.info(
+      `Server is running at http://localhost:${appConfig.Port} in ${appConfig.enviroment} mode`
+    );
+  });
+  return Promise.resolve();
+}
+
+main()
+  .then(() => logger.info("Server is running"))
+  .catch((err) => {
+    logger.error(`Server has field with error: ${err}`);
+    process.exit(1);
+  });

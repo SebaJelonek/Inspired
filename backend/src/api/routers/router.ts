@@ -3,7 +3,7 @@ import cors from "cors";
 import logger from "app/utils/logger";
 import { AppServices } from "app/app-services";
 import { wrap } from "app/utils/express";
-import { healthCheckController } from "app/api/controllers/health-check-controller";
+import { healthCheck } from "app/api/controllers/check-health";
 
 export async function buildRouter(services: AppServices): Promise<Express> {
   logger.debug("Building router");
@@ -12,7 +12,7 @@ export async function buildRouter(services: AppServices): Promise<Express> {
   app.use(cors({ origin: "*" }));
   app.use(express.json());
 
-  app.get("/health", wrap(healthCheckController(services)));
+  app.get("/health", wrap(healthCheck(services)));
 
   return app;
 }

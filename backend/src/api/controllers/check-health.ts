@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import { AppServices } from "app/app-services";
 import logger from "app/utils/logger";
-import { Knex } from "knex";
 
-export function healthCheckController({ appConfig, storages }: AppServices) {
+export function healthCheck({ appConfig, storages }: AppServices) {
   return async (req: Request, res: Response) => {
     let dbError;
     try {

@@ -20,8 +20,8 @@ describe("getSkillsControler", () => {
       name: "Baking",
       level: 4,
     });
-
-    const response = await agent.get("/skills");
+    // const resBody = await testApp.services.storages.skillsStorage.getAll();
+    const response = await agent.get("/api/skills");
     const resBody = response.body as GetSkillsResponse;
 
     expect(resBody.skills.length).to.be.eq(2);

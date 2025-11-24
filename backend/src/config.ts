@@ -28,7 +28,7 @@ export async function appConfig() {
   return {
     enviroment,
     useDbMock,
-    DbConfig: getDbConfig(useDbMock),
+    DbConfig: await getDbConfig(useDbMock),
     Port: port,
   };
 }

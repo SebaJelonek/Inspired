@@ -19,7 +19,7 @@ export class SkillsMockStorage implements SkillsStorage {
       skillId: this.skills.length + 1,
       name: data.name,
       level: data.level,
-      updateAt: new Date(),
+      updatedAt: new Date(),
     };
 
     this.skills.push(skillEntity);

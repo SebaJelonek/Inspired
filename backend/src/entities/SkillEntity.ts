@@ -4,7 +4,7 @@ export const skillEntitySchema = z.object({
   skillId: z.number(),
   name: z.string().nonempty(),
   level: z.number().int(),
-  updateAt: z.date(),
+  updatedAt: z.date(),
 });
 
 export type SkillEntity = z.infer<typeof skillEntitySchema>;

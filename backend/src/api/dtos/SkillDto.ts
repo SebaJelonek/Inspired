@@ -13,7 +13,7 @@ export type SkillDto = z.infer<typeof skillDto>;
 export function entityToDto(entity: SkillEntity): SkillDto {
   return {
     ...entity,
-    updatedAt: entity.updateAt.toISOString(),
+    updatedAt: entity.updatedAt.toISOString(),
   };
 }
 

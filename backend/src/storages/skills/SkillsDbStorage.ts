@@ -1,7 +1,7 @@
 import { Knex } from "knex";
 import { z } from "zod";
 import { SkillEntity, skillEntitySchema } from "app/entities/SkillEntity";
-import { SkillsStorage } from "app/storages/SkillsStorage";
+import { SkillsStorage } from "app/storages/skills/SkillsStorage";
 import { Table } from "app/storages/DbSchema";
 
 export class SkillsDbStorage implements SkillsStorage {

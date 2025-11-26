@@ -1,5 +1,5 @@
 import { SkillEntity } from "app/entities/SkillEntity";
-import { SkillsStorage } from "app/storages/SkillsStorage";
+import { SkillsStorage } from "app/storages/skills/SkillsStorage";
 
 export class SkillsMockStorage implements SkillsStorage {
   private skills: SkillEntity[] = [];

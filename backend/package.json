@@ -8,7 +8,8 @@
     "dev": "nodemon --watch src --exec ts-node --require tsconfig-paths/register --require dotenv/config src/index.ts",
     "start": "npx tsc && node dist/index.js",
     "test": "npm run mocha -- --exclude '**/flycheck_*.ts'",
-    "start:services": "docker-compose rm --force && docker-compose up --build"
+    "start:services": "docker-compose rm --force && docker-compose up --build",
+    "migration:create": "knex migrate:make -x ts --migrations-directory ./src/migrations"
   },
   "config": {
     "node_options": "--require ts-node/register --require tsconfig-paths/register --require reflect-metadata --require dotenv/config"

@@ -1,8 +1,8 @@
 import { Knex, knex as buildKnex } from "knex";
 import { AppConfig, appConfig as getAppConfig } from "app/config";
-import { SkillsMockStorage } from "app/storages/SkillsMockStorage";
-import { SkillsStorage } from "app/storages/SkillsStorage";
-import { SkillsDbStorage } from "app/storages/SkillsDbStorage";
+import { SkillsMockStorage } from "app/storages/skills/SkillsMockStorage";
+import { SkillsStorage } from "app/storages/skills/SkillsStorage";
+import { SkillsDbStorage } from "app/storages/skills/SkillsDbStorage";
 import logger from "app/utils/logger";
 
 export type AppServices = {

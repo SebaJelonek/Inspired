@@ -4,7 +4,7 @@ export async function up(knex: Knex): Promise<void> {
   await knex.schema.withSchema("app").createTable("activities", (table) => {
     table.increments("id");
     table.string("title").notNullable();
-    table.string("summary").notNullable();
+    table.text("summary").notNullable();
     table.string("image_path").notNullable();
     table.string("first_skill").notNullable();
     table.string("second_skill");

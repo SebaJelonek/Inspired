@@ -1,53 +1,46 @@
-Skill Tracker Application Service Layer
+# Inspired Backend CMS
 
-This document summarizes the progress in building the core service and persistence layers for the Skill Tracker application. The design strictly adheres to a modular, layer-separated architecture to ensure testability, maintainability, and flexibility.
+A robust, production-oriented backend infrastructure project designed to act as a Headless CMS.
 
-1. Data Contract and Validation (Entities)
+## About The Project
 
-All foundational data structures are defined and validated at runtime using Zod schemas to guarantee data integrity across the application layers.
+This project started as a study of the [Pragmatic Coders Junior Fullstack Interview](https://github.com/pragmaticcoders/junior-fullstack-interview) repository. During an interview process, I was impressed by the architectural quality of their base project and decided to use it as the foundation for my own learning journey.
 
-SkillEntity: The complete, canonical representation of a skill, including database-generated fields (skillId, updatedAt).
+**Until commit `7f60420`**, I followed the original repository strictly to establish the infrastructure. **Since November 26th, 2025**, I have diverged from the original path to build a custom CMS service designed to capture data and populate a frontend application.
 
-CreateSkillPayload: The specific data shape required for inserting a new skill, which excludes the auto-generated skillId and updatedAt.
+## Goals
 
-2. Storage Abstraction (Interface)
+- **Production Simulation:** To build an application that is as close to "production-ready" as possible, focusing on proper layering, configuration, and separation of concerns.
+- **Containerization:** Fully dockerized environment with the end goal of deployment to a cloud provider (AWS/Azure).
+- **Testing:** Elevating my testing skills (previously Go, now TypeScript/Node) to new heights using Mocha and Chai.
 
-The SkillsStorage interface defines the mandatory contract for all data access modules, ensuring the business logic remains decoupled from the persistence technology.
+## Tech Stack & Learning Outcomes
 
-The contract mandates all standard CRUD operations: getAll(), getById(), insert(), and delete().
+Building this has been a deep dive into backend configuration and tooling. Key technologies and concepts implemented include:
 
-3. Storage Implementations (Persistence)
+- **Runtime:** Node.js
+- **Language:** TypeScript (configured for strict typing with Zod for validation)
+- **Database:** PostgreSQL (with Knex.js for migrations and query building)
+- **Infrastructure:** Docker & Docker Compose (first-time implementation)
+- **Logging** Winston (with log-format for verbose logs in json format )
+- **Testing:** Mocha, Chai, Sinon (Mocking and Integration testing)
+- **Architecture:** Layered Architecture (Separation of `app-services`, `config`, and `server`).
 
-Two interchangeable implementations fulfill the SkillsStorage contract, allowing the application to easily switch between mock and production environments based on configuration.
+## Roadmap
 
-Implementation
+- [x] Establish Infrastructure (Docker, Typescript, Linter)
+- [x] Database Connection & Migrations Setup
+- [x] Basic CRUD Operations (Skills Domain)
+- [x] Integration Testing Setup
+- [ ] Implement Activities Domain (Soft Deletes, Delta Sync)
+- [ ] Implement Learning Domain (Soft Deletes, Delta Sync)
+- [ ] Add Content Management Logic
+- [ ] Cloud Deployment (AWS/Azure)
 
-Purpose
+## Acknowledgements
 
-Key Technical Details
+I want to extend a huge thank you to **Pragmatic Coders**. This project exists because of the guidance provided by their open-source interview repository. It provided a free, high-quality architectural lesson that I did not expect but am extremely thankful for.
 
-SkillsMockStorage
+---
 
-Used for local testing and scenarios where database access is mocked.
-
-Implements persistence using standard JavaScript array methods (find, filter).
-
-SkillsDbStorage
-
-Production implementation using Knex (SQL query builder).
-
-Knex/Zod Integration: All raw database results are immediately validated with Zod upon retrieval. Insertion (insert) correctly uses .returning('\*') with array destructuring (const [record] = await ...) to fetch the complete, newly created row.
-
-4. Utility Components
-
-Essential supporting files for the application structure:
-
-Table Enum: Provides canonical, type-safe names for database tables (app.skills).
-
-Logger: A robust logging utility built on Winston that integrates environment awareness (e.g., using colorized output for "local" environments and JSON for production) and injects metadata like appVersion.
-
-Current Status: Finalizing Dependencies
-
-All core data entities, interfaces, and storage implementations are complete.
-
-The final task is to define the Application Configuration (AppConfig) structure. This is required to complete the dependency injection logic in app-services.ts which decides whether to instantiate SkillsMockStorage or SkillsDbStorage.
+_Note: While I strive for "production-ready" code, this is a learning experience and represents my best effort at professional architecture to date._

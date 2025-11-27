@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { SkillEntity, skillEntitySchema } from "app/entities/SkillEntity";
+import { SkillEntity } from "app/entities/SkillEntity";
 
 export const skillDto = z.object({
   skillId: z.number(),

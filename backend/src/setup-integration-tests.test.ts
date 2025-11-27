@@ -36,4 +36,5 @@ export async function getTestApp() {
 
 async function clearDb(knex: Knex) {
   await knex(Table.Skills).delete();
+  await knex(Table.Activities).delete();
 }

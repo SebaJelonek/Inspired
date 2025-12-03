@@ -26,6 +26,19 @@ export class ActivitiesDbStorage implements ActivitiesStorage {
     return z.array(activitiesEntitySchema).parse(result);
   }
 
+  async getByTitle(title: string): Promise<ActivitiesEntity | null> {
+    const result = await this.database
+      .table(Table.Activities)
+      .select("*")
+      .where("title", title)
+      .first();
+
+    if (!result) {
+      return null;
+    }
+    return activitiesEntitySchema.parse(result);
+  }
+
   async insert(
     data: Omit<ActivitiesEntity, "id" | "updatedAt">
   ): Promise<ActivitiesEntity> {

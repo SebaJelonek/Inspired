@@ -19,29 +19,14 @@ export async function down(knex: Knex): Promise<void> {
   await knex.schema.withSchema("app").dropTable("activities");
 }
 /*
-
-
 checkPositive #
-
 column.checkPositive([constraintName])
-
 Specify a check on column that test if the value of column is positive.
-
-
 knex.schema.createTable('product', function (table) {
-
   table.integer('price').checkPositive();});
-
-
 i think you have outdated info
-
 it looks legit imo
-
-
 i will test it i guess
-
 but i would need to re run migration first
-
 so i will commit now
-
 */

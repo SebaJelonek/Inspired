@@ -20,7 +20,8 @@
         "foregroundImage": "",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.anonymous.ReactNativeInspiredMindsClone"
     },
     "web": {
       "favicon": ""

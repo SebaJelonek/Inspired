@@ -1,6 +1,18 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": false
-  },
+    "strict": false,
+    // 1. Base URL is required for paths to work
+    "baseUrl": ".",
+    // 2. Define your aliases here
+    "paths": {
+      // Maps using the "@" symbol are standard convention in React
+      "@assets/*": ["assets/*"],
+      "@components/*": ["components/*"],
+      "@screens/*": ["screens/*"],
+      "@hooks/*": ["hooks/*"],
+      // Or use your backend style if you prefer:
+      "app/*": ["src/*"],
+    },
+  }
 }

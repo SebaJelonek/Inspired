@@ -8,8 +8,8 @@ import CalendarIcon from "@assets/calendar_thin.svg";
 
 export const Home: React.FC = () => {
   return (
-    <View className="w-full flex-1 justify-center">
-      <View className="w-full flex-1 justify-center items-center">
+    <View className="w-full h-full flex-1 justify-center bg-teal-50">
+      <View className="w-full h-full flex-1 justify-center items-center">
         <View>
           <Text className="text-cyan-600 text-4xl text-center mt-16">
             wymyś

@@ -10,6 +10,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string("second_skill");
     table.integer("age").notNullable();
     table.enu("preparation", ["Low", "Medium", "High"]).notNullable();
+    table.specificType("materials", "text[]");
     table.timestamp("updatedAt").notNullable().defaultTo(knex.fn.now());
     table.boolean("isDeleted").defaultTo(false);
   });

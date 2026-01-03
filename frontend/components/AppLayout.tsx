@@ -6,13 +6,22 @@ import { Favorite } from "@screens/Favorite";
 import { Learn } from "@screens/Learn";
 import BottomNavbar from "@components/BottomNavbar";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const Stack = createNativeStackNavigator();
 
 // 1. Create a layout that holds both the Stack AND the Navbar
 export const AppLayout: React.FC = () => {
+  const { top, bottom } = useSafeAreaInsets();
   return (
-    <View style={{ flex: 1, position: "relative" }}>
+    <View
+      style={{
+        flex: 1,
+        paddingTop: top,
+        paddingBottom: bottom,
+        position: "relative",
+      }}
+    >
       {/* The Screens (They will animate behind the navbar) */}
       <Stack.Navigator
         id={undefined}

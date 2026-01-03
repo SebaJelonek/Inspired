@@ -4,7 +4,6 @@ import Svg, { Path, SvgProps } from "react-native-svg";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Animated from "react-native-reanimated";
 import { navigationRef, navigate } from "utils/navigationRef";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 // Imports
 import { TabIcon } from "@components/TabIcon";
@@ -51,18 +50,15 @@ const TABS: TabItem[] = [
 
 export default function BottomNavbar() {
   const insets = useSafeAreaInsets();
-  // 2. Local state to track the route name (since we can't use the hook)
+
   const [currentRouteName, setCurrentRouteName] = useState<string>("Home");
 
-  // 3. Listen for Navigation Changes
   useEffect(() => {
-    // A. Set initial value
     if (navigationRef.isReady()) {
       const name = navigationRef.getCurrentRoute()?.name;
       if (name) setCurrentRouteName(name);
     }
 
-    // B. Create listener
     const unsubscribe = navigationRef.addListener("state", () => {
       const name = navigationRef.getCurrentRoute()?.name;
       if (name) setCurrentRouteName(name);
@@ -71,7 +67,6 @@ export default function BottomNavbar() {
     return unsubscribe;
   }, []);
 
-  // 4. Calculate Index based on our local 'currentRouteName' state
   const getIndex = () => {
     const index = TABS.findIndex((t) => t.route === currentRouteName);
     return index >= 0 ? index : 0;
@@ -93,17 +88,35 @@ export default function BottomNavbar() {
   const handlePress = (index: number) => {
     const selectedTab = TABS[index];
     if (selectedTab?.route) {
-      // 5. Use our custom navigate function
       navigate(selectedTab.route);
     }
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#e2e8f0", position: "relative" }}>
-      <View style={{ position: "absolute", bottom: 0, width: "100%" }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "red",
+        position: "absolute",
+        bottom: insets.bottom / 2,
+        height: CONFIG.VISUAL_HEIGHT,
+      }}
+    >
+      <View
+        style={{
+          position: "absolute",
+          bottom: 0,
+          height: CONFIG.VISUAL_HEIGHT,
+          backgroundColor: "#f3e8ff",
+        }}
+      >
         {/* BACKGROUND */}
         <View
-          style={{ position: "absolute", bottom: 0, width: "100%", zIndex: 1 }}
+          style={{
+            position: "absolute",
+            bottom: 0,
+            height: CONFIG.VISUAL_HEIGHT,
+          }}
         >
           <Svg
             width={width}

@@ -10,7 +10,7 @@ async function main() {
 
   server.listen(appConfig.Port, () => {
     logger.info(
-      `Server is running at http://localhost:${appConfig.Port} in ${appConfig.enviroment} mode`
+      `Server is running at http://localhost:${appConfig.Port} in ${appConfig.enviroment} mode`,
     );
   });
   return Promise.resolve();

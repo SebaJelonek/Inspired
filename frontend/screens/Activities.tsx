@@ -1,5 +1,4 @@
-import { Text, View, ScrollView, FlatList } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Text, View, ScrollView } from "react-native";
 
 export const Activities: React.FC = () => {
   return (
@@ -8,7 +7,8 @@ export const Activities: React.FC = () => {
         <Text className="text-5xl text-center m-3">EXPLORE</Text>
       </View>
       <View className="w-full h-full flex-1 justify-center items-center">
-        <View className="w-full">
+        {/*  */}
+        <View className="w-full m-5">
           <View>
             <Text className="text-3xl w-full">Age</Text>
           </View>
@@ -18,7 +18,8 @@ export const Activities: React.FC = () => {
             </View>
           </View>
         </View>
-        <View className="w-full">
+        {/*  */}
+        <View className="w-full m-5">
           <View>
             <Text className="text-3xl w-full">Skill</Text>
           </View>
@@ -27,7 +28,7 @@ export const Activities: React.FC = () => {
               <Text className="text-xl">Art</Text>
             </View>
           </View>
-          <View className="w-full">
+          <View className="w-full m-5">
             <View>
               <Text className="text-3xl w-full">Materials</Text>
             </View>
@@ -37,7 +38,7 @@ export const Activities: React.FC = () => {
               </View>
             </View>
           </View>
-          <View className="w-full">
+          <View className="w-full m-5">
             <View>
               <Text className="text-3xl w-full">Location</Text>
             </View>
@@ -47,7 +48,7 @@ export const Activities: React.FC = () => {
               </View>
             </View>
           </View>
-          <View className="w-full">
+          <View className="w-full m-5">
             <View>
               <Text className="text-3xl w-full">Seasonal</Text>
             </View>
@@ -57,7 +58,7 @@ export const Activities: React.FC = () => {
               </View>
             </View>
           </View>
-          <View className="w-full">
+          <View className="w-full m-5">
             <View>
               <Text className="text-3xl w-full">Fundamentals</Text>
             </View>

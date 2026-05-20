@@ -33,7 +33,13 @@ export async function appConfig() {
   };
 }
 
+function extenstion() {
+  const isProd = __filename.endsWith(".js");
+  return isProd ? [".js"] : [".ts"];
+}
+
 function getDbConfig(useMock: boolean): Knex.Config {
+  const extension = extenstion();
   if (useMock) {
     return {
       client: "mock",
@@ -44,7 +50,7 @@ function getDbConfig(useMock: boolean): Knex.Config {
     connection: dbConnectionBuilder(),
     migrations: {
       directory: join(__dirname, "./migrations"),
-      loadExtensions: [".ts"],
+      loadExtensions: extension,
       schemaName: "app",
     },
   };

@@ -8,12 +8,16 @@ export class ActivitiesMockStorage implements ActivitiesStorage {
     return this.activities.filter(({ isDeleted }) => isDeleted === false);
   }
 
+  async getByTitle(title: string): Promise<ActivitiesEntity | null> {
+    return this.activities.find((a) => a.title === title) ?? null;
+  }
+
   async getSince(date: Date): Promise<ActivitiesEntity[]> {
     return this.activities.filter(({ updatedAt }) => updatedAt > date);
   }
 
   async insert(
-    data: Omit<ActivitiesEntity, "id" | "updatedAt">
+    data: Omit<ActivitiesEntity, "id" | "updatedAt">,
   ): Promise<ActivitiesEntity> {
     const activity: ActivitiesEntity = {
       id: this.activities.length + 1,
@@ -28,7 +32,7 @@ export class ActivitiesMockStorage implements ActivitiesStorage {
 
   async delete(id: number): Promise<boolean> {
     const toDelete: ActivitiesEntity | undefined = this.activities.find(
-      (a) => a.id === id
+      (a) => a.id === id,
     );
 
     if (toDelete) {

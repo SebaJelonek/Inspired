@@ -1,22 +1,79 @@
 services:
   postgres:
-    container_name: inspired-backend
-    image: postgres:16.1-bullseye
+    container_name: inspired-db
+    build:
+      context: .
+      dockerfile: postgres:16.1-bullseye
+    user: postgres # Default user for postgres, elsewhere you have premission problems
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
-      PGDATA: /data/postgres
+      POSTGRES_DB: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
       DATABASE: fullstack_interview_dev_local
       DATABASE_TESTS: fullstack_interview_dev_tests
-    volumes:
-      - ./scripts/db/init:/docker-entrypoint-initdb.d
     ports:
       - "5434:5432"
     networks:
-      - postgres
-    # To log all queries:
-    # command: ["postgres", "-c", "log_statement=all"]
+      - inspired-network
+
+  azurite:
+    container_name: non-inspired-storage
+    user: "root"
+    image: mcr.microsoft.com/azure-storage/azurite:latest
+    volumes:
+      - azurite-data:/data
+    # Azurite uses three ports: Blob (10000), Queue (10001), Table (10002)
+    ports:
+      - "10000:10000"
+      - "10001:10001"
+      - "10002:10002"
+      # To keep your host folder clean, we tell Azurite to store its data in the mapped folder
+    command:
+      [
+        "azurite",
+        "-l",
+        "/data",
+        "--blobHost",
+        "0.0.0.0",
+        "--queueHost",
+        "0.0.0.0",
+        "--tableHost",
+        "0.0.0.0",
+      ]
+    networks:
+      - inspired-network
+
+  node:
+    container_name: inspired-node-backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      - ENVIRONMENT=development
+      - PGHOST=postgres
+      - PGPORT=5432
+      - AZURE_STORAGE_CONNECTION_STRING=DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://azurite:10000/devstoreaccount1;QueueEndpoint=http://azurite:10001/devstoreaccount1;TableEndpoint=http://azurite:10002/devstoreaccount1;
+    depends_on:
+      postgres:
+        condition: service_healthy
+      azurite:
+        condition: service_started
+    networks:
+      - inspired-network
 
 networks:
-  postgres:
+  inspired-network:
     driver: bridge
+
+volumes:
+  azurite-data:

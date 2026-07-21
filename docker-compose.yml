@@ -1,10 +1,8 @@
 services:
   postgres:
     container_name: inspired-db
-    build:
-      context: .
-      dockerfile: postgres:16.1-bullseye
-    user: postgres # Default user for postgres, elsewhere you have premission problems
+    image: postgres:16.1-bullseye
+    # user: postgres # Default user for postgres, elsewhere you have premission problems
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -17,6 +15,10 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
       DATABASE: fullstack_interview_dev_local
       DATABASE_TESTS: fullstack_interview_dev_tests
+    volumes:
+      # - inspired_pgdata:/var/lib/postgresql/data
+      # Make sure the host path (left side) matches your actual project structure:
+      - ./scripts/db/init:/docker-entrypoint-initdb.d:z
     ports:
       - "5434:5432"
     networks:
@@ -33,7 +35,7 @@ services:
       - "10000:10000"
       - "10001:10001"
       - "10002:10002"
-      # To keep your host folder clean, we tell Azurite to store its data in the mapped folder
+      # To keep host folder clean, we tell Azurite to store its data in the mapped folder
     command:
       [
         "azurite",
@@ -52,22 +54,35 @@ services:
   node:
     container_name: inspired-node-backend
     build:
-      context: .
+      context: ./backend-node
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
     env_file:
-      - .env
+      - ./.env
     environment:
       - ENVIRONMENT=development
       - PGHOST=postgres
       - PGPORT=5432
       - AZURE_STORAGE_CONNECTION_STRING=DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://azurite:10000/devstoreaccount1;QueueEndpoint=http://azurite:10001/devstoreaccount1;TableEndpoint=http://azurite:10002/devstoreaccount1;
+      - GO_AUTH_MEDIA=go-auth-media:50051
     depends_on:
       postgres:
         condition: service_healthy
       azurite:
         condition: service_started
+      go-auth-media:
+        condition: service_started
+    networks:
+      - inspired-network
+
+  go-auth-media:
+    container_name: inspired-go-auth-media
+    build:
+      context: ./backend-go
+      dockerfile: Dockerfile
+    ports:
+        - "50051:50051" #gRPC port
     networks:
       - inspired-network
 

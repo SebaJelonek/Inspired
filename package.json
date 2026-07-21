@@ -1,0 +1,9 @@
+{
+  "name": "inspired",
+  "private": true,
+  "scripts": {
+    "infra": "docker compose down -v && docker compose up --build",
+    "node:dev": "npm run dev --prefix backend-node",
+    "node:test": "npm run test --prefix backend-node"
+  }
+}

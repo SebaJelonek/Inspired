@@ -16,8 +16,6 @@ services:
       DATABASE: fullstack_interview_dev_local
       DATABASE_TESTS: fullstack_interview_dev_tests
     volumes:
-      # - inspired_pgdata:/var/lib/postgresql/data
-      # Make sure the host path (left side) matches your actual project structure:
       - ./scripts/db/init:/docker-entrypoint-initdb.d:z
     ports:
       - "5434:5432"
@@ -59,7 +57,7 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - ./.env
+      - ./.env.node
     environment:
       - ENVIRONMENT=development
       - PGHOST=postgres
@@ -83,6 +81,8 @@ services:
       dockerfile: Dockerfile
     ports:
         - "50051:50051" #gRPC port
+    env_file:
+      - ./.env.go
     networks:
       - inspired-network
 

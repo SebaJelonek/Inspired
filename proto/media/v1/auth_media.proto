@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package media.v1;
+
+option go_package = "backend-go/gen/media/v1;mediav1";
+
+// Service for media processing and authentication tasks
+service MediaService {
+  rpc ProcessImage (ProcessImageRequest) returns (ProcessImageResponse);
+  rpc JwtGenerate (JwtGenerateRequest) returns (JwtGenerateResponse);
+  rpc JwtValidate (JwtValidateRequest) returns (JwtValidateResponse);
+}
+
+message ProcessImageRequest {
+  string image_id = 1;
+  string blob_url = 2;
+  int32 target_width = 3;
+  int32 target_height = 4;
+}
+
+message ProcessImageResponse {
+  string processed_blob_url = 1;
+  bool success = 2;
+  string error_message = 3;
+}
+
+message JwtGenerateRequest {
+    int32 user_id = 1;
+    string token_type = 2;
+}
+
+message JwtGenerateResponse {
+    string token = 1;
+}
+
+message JwtValidateRequest {
+    string token = 1;
+    string token_type = 2;
+}
+
+message JwtValidateResponse {
+    bool is_valid = 1;
+    int32 user_id = 2;
+}

@@ -6,21 +6,14 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"log"
-	"os"
 )
 
-func Generate(header Header, payload Payload, tokenType string) string {
+func Generate(payload Payload, tokenType string) string {
 	encoder := base64.URLEncoding.WithPadding(base64.NoPadding)
-	var secret string
 
-	switch tokenType {
-	case "auth":
-		secret = os.Getenv("JWT_AUTH_SECRET")
-	case "session":
-		secret = os.Getenv("JWT_SESSION_SECRET")
-	}
+	secret := GetSecret(tokenType)
 
-	jsonHeader, err := json.Marshal(header)
+	jsonHeader, err := json.Marshal(GetHeader())
 	if err != nil {
 		log.Println(err)
 		panic(err)
@@ -32,7 +25,7 @@ func Generate(header Header, payload Payload, tokenType string) string {
 		panic(err)
 	}
 
-	log.Println("generate, why?", tokenType)
+	log.Println("generate, why?", tokenType) //<- debug porpuse
 
 	jsonWebHeader := encoder.EncodeToString(jsonHeader)
 	jsonWebPayload := encoder.EncodeToString(jsonPayload)

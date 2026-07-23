@@ -13,10 +13,12 @@ import logger from "app/utils/logger";
 import { BlobStorage } from "./storages/blob/BlobStorage";
 import { AzureBlobStorage } from "./storages/blob/AzureBlobStorage";
 import { MockBlobStorage } from "./storages/blob/MockBlobStorage";
+import { createAuthMediaClient, MediaAuthClient } from "./utils/auth-media-client";
 
 export type AppServices = {
   appConfig: AppConfig;
   storages: Storages;
+  mediaAuthClient: MediaAuthClient
 };
 
 export type Storages = {
@@ -39,9 +41,11 @@ export const appServiceBuilder = async (): Promise<AppServices> => {
     await startStorages(storages);
   }
   BlobServiceClient.fromConnectionString(appConfig.BlobConnection);
+  const mediaAuthClient = createAuthMediaClient(appConfig.goGrpc)
   return {
     appConfig,
     storages,
+    mediaAuthClient,
   };
 };
 

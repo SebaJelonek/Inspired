@@ -4,8 +4,8 @@ import { buildRouter } from "app/api/routers/router";
 import logger from "app/utils/logger";
 
 async function main() {
-  const { appConfig, storages } = await appServiceBuilder();
-  const router = await buildRouter({ appConfig, storages });
+  const { appConfig, storages, mediaAuthClient } = await appServiceBuilder();
+  const router = await buildRouter({ appConfig, storages, mediaAuthClient });
   let server = createServer(router);
 
   server.listen(appConfig.Port, () => {

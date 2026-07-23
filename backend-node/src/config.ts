@@ -16,6 +16,7 @@ export type AppConfig = {
   DbConfig: Knex.Config;
   BlobConnection: string;
   Port: number;
+  goGrpc: string;
 };
 
 export async function appConfig() {
@@ -26,6 +27,7 @@ export async function appConfig() {
   const port = readRequiredInt("PORT");
   const useDbMock = readOptionalBool("USE_DB_MOCK", false);
   const azureStorage = readRequiredString("AZURE_STORAGE_CONNECTION_STRING");
+  const goGrpc = readRequiredString("GO_BACKEND_HOST")
 
   return {
     enviroment,
@@ -33,6 +35,7 @@ export async function appConfig() {
     DbConfig: await getDbConfig(useDbMock),
     BlobConnection: azureStorage,
     Port: port,
+    goGrpc: goGrpc,
   };
 }
 

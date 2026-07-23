@@ -5,12 +5,13 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"log"
 	"strings"
 	"time"
 )
 
-func Validate(jwt string, tokenType string) (bool, int) {
+func Validate(jwt string, tokenType string) (bool, int, error) {
 	var userID int = 0
 	var secret string
 
@@ -19,7 +20,7 @@ func Validate(jwt string, tokenType string) (bool, int) {
 	tokens := strings.Split(jwt, ".")
 
 	if len(tokens) != 3 {
-		return false, 0
+		return false, 0, fmt.Errorf("invalid token format: expected 3 parts, got %d", len(tokens))
 	}
 
 	headerStringEncoded := tokens[0]
@@ -32,19 +33,19 @@ func Validate(jwt string, tokenType string) (bool, int) {
 	signatureString, err := encoder.DecodeString(signatureStringEncoded)
 	if err != nil {
 		log.Println(err)
-		return false, userID
+		return false, userID, err
 	}
 
 	headerString, err := encoder.DecodeString(headerStringEncoded)
 	if err != nil {
 		log.Println(err)
-		return false, userID
+		return false, userID, err
 	}
 
 	payloadString, err := encoder.DecodeString(payloadStringEncoded)
 	if err != nil {
 		log.Println(err)
-		return false, userID
+		return false, userID, err
 	}
 
 	payloadDecoded := []byte(payloadString)
@@ -53,21 +54,21 @@ func Validate(jwt string, tokenType string) (bool, int) {
 	err = json.Unmarshal(payloadDecoded, &payload)
 	if err != nil {
 		log.Println(err)
-		return false, userID
+		return false, userID, err
 	}
 
 	err = json.Unmarshal(headerDecoded, &header)
 	if err != nil {
 		log.Println(err)
-		return false, userID
+		return false, userID, err
 	}
 
 	if header.Alg != "HS256" { //wrong algo
-		return false, userID
+		return false, userID, err
 	}
 
 	if payload.Expiration < time.Now().UnixMilli() { //token expired
-		return false, userID
+		return false, userID, err
 	}
 
 	secret = GetSecret(tokenType)
@@ -81,5 +82,5 @@ func Validate(jwt string, tokenType string) (bool, int) {
 		userID = payload.UserID
 	}
 
-	return isValid, userID
+	return isValid, userID, nil
 }

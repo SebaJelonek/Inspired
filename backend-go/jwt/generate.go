@@ -8,7 +8,7 @@ import (
 	"log"
 )
 
-func Generate(payload Payload, tokenType string) string {
+func Generate(payload Payload, tokenType string) (string, error) {
 	encoder := base64.URLEncoding.WithPadding(base64.NoPadding)
 
 	secret := GetSecret(tokenType)
@@ -16,13 +16,13 @@ func Generate(payload Payload, tokenType string) string {
 	jsonHeader, err := json.Marshal(GetHeader())
 	if err != nil {
 		log.Println(err)
-		panic(err)
+		return "", err
 	}
 
 	jsonPayload, err := json.Marshal(payload)
 	if err != nil {
 		log.Println(err)
-		panic(err)
+		return "", err
 	}
 
 	log.Println("generate, why?", tokenType) //<- debug porpuse
@@ -38,5 +38,5 @@ func Generate(payload Payload, tokenType string) string {
 	jwHashed := hmac.Sum(nil)
 
 	jwt := jw + "." + encoder.EncodeToString(jwHashed)
-	return jwt
+	return jwt, nil
 }

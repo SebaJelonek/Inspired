@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package media.v1;
 
-option go_package = "backend-go/gen/media/v1;mediav1";
+option go_package = "github.com/SebaJelonek/Inspired/backend-go/gen/media/v1;mediav1";
 
 // Service for media processing and authentication tasks
 service MediaService {

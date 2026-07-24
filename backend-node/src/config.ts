@@ -15,25 +15,32 @@ export type AppConfig = {
   useDbMock: boolean;
   DbConfig: Knex.Config;
   BlobConnection: string;
+  AccountKey: string;
   Port: number;
   goGrpc: string;
 };
 
 export async function appConfig() {
-  const { readRequiredString, readOptionalBool, readRequiredInt } =
-    createEnvReader(process.env);
+  const {
+    readRequiredString,
+    readOptionalBool,
+    readRequiredInt,
+    parseConnectionString,
+  } = createEnvReader(process.env);
 
   const enviroment = readRequiredString("ENVIRONMENT") as Enviroment;
   const port = readRequiredInt("PORT");
   const useDbMock = readOptionalBool("USE_DB_MOCK", false);
   const azureStorage = readRequiredString("AZURE_STORAGE_CONNECTION_STRING");
-  const goGrpc = readRequiredString("GO_BACKEND_HOST")
+  const goGrpc = readRequiredString("GO_BACKEND_HOST");
+  const azureAccountKey = parseConnectionString(azureStorage, "AccountKey");
 
   return {
     enviroment,
     useDbMock,
     DbConfig: await getDbConfig(useDbMock),
     BlobConnection: azureStorage,
+    AccountKey: azureAccountKey,
     Port: port,
     goGrpc: goGrpc,
   };

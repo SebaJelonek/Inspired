@@ -1,9 +1,10 @@
 export function createEnvReader(envs: NodeJS.ProcessEnv) {
+  //
   function toInt(variable: string, value: string): number {
     const int = parseInt(value, 10);
     if (!Number.isFinite(int)) {
       throw new Error(
-        `Expected variable ${variable} to be integer but got ${value}`
+        `Expected variable ${variable} to be integer but got ${value}`,
       );
     }
     return int;
@@ -38,7 +39,7 @@ export function createEnvReader(envs: NodeJS.ProcessEnv) {
         break;
       default:
         throw new Error(
-          `Expected variable ${variable} to be boolean but got ${value}`
+          `Expected variable ${variable} to be boolean but got ${value}`,
         );
     }
 
@@ -50,7 +51,7 @@ export function createEnvReader(envs: NodeJS.ProcessEnv) {
       const value = envs[variable];
       if (value === undefined) {
         throw new Error(
-          `The variable ${variable} you are looking for does not exist.`
+          `The variable ${variable} you are looking for does not exist.`,
         );
       }
       return value;
@@ -66,7 +67,7 @@ export function createEnvReader(envs: NodeJS.ProcessEnv) {
       const value = envs[variable];
       if (value === undefined) {
         throw new Error(
-          `The variable ${variable} you are looking for does not exist.`
+          `The variable ${variable} you are looking for does not exist.`,
         );
       }
       return toInt(variable, value);
@@ -82,7 +83,7 @@ export function createEnvReader(envs: NodeJS.ProcessEnv) {
       const value = envs[variable];
       if (value === undefined) {
         throw new Error(
-          `The variable ${variable} you are looking for does not exist.`
+          `The variable ${variable} you are looking for does not exist.`,
         );
       }
       return toBool(variable, value);
@@ -93,6 +94,26 @@ export function createEnvReader(envs: NodeJS.ProcessEnv) {
         return toBool(variable, value);
       }
       return fallback;
+    },
+
+    parseConnectionString(
+      connectionString: string,
+      partToFind: string,
+    ): string {
+      const parts = connectionString.split(";");
+      const prefix = `${partToFind}=`;
+
+      // 1. Find the exact matching key segment
+      const match = parts.find((part) => part.startsWith(prefix));
+
+      if (!match) {
+        throw new Error(
+          `${partToFind} has not been found in connection string`,
+        );
+      }
+
+      // 2. Extract everything after "KeyName="
+      return match.slice(prefix.length);
     },
   });
 }

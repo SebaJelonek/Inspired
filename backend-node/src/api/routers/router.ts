@@ -12,6 +12,7 @@ import { errorsMiddleware } from "../middleware/errors-middleware";
 import { validateCreateActivity } from "../middleware/create-activity-validation";
 import { authMiddleware } from "../middleware/auth-middleware";
 import cookieParser from "cookie-parser";
+import { requestUploadUrl } from "../controllers/photos/request-upload-url";
 
 export async function buildRouter(services: AppServices): Promise<Express> {
   logger.debug("Building router");
@@ -21,34 +22,25 @@ export async function buildRouter(services: AppServices): Promise<Express> {
   app.use(express.json());
   app.use(cookieParser());
 
-
-  /*lets write a commit message
-
-
-  added auth middleware (still need to fix it because the expected is to )
-  i have added types for express request in order to be able to add userid and token type to auth middleware
-
-  */
-
   // Quick test route to check gRPC JWT generation
-    app.post(
-      "/api/test-token",
-      wrap(async (req, res) => {
-        const { userId = 123, tokenType = "auth" } = req.body || {};
+  app.post(
+    "/api/test-token",
+    wrap(async (req, res) => {
+      const { userId = 123, tokenType = "auth" } = req.body || {};
 
-        logger.info(`Testing JWT generation for userId: ${userId}`);
+      logger.info(`Testing JWT generation for userId: ${userId}`);
 
-        const response = await services.mediaAuthClient.jwtGenerate({
-          userId,
-          tokenType,
-        });
+      const response = await services.mediaAuthClient.jwtGenerate({
+        userId,
+        tokenType,
+      });
 
-        res.status(200).json({
-          success: true,
-          data: response,
-        });
-      })
-    );
+      res.status(200).json({
+        success: true,
+        data: response,
+      });
+    }),
+  );
   // end of test
 
   // real test of the authMiddleware
@@ -69,10 +61,9 @@ export async function buildRouter(services: AppServices): Promise<Express> {
         success: true,
         data: response,
       });
-    })
+    }),
   );
-// end of test
-
+  // end of test
 
   app.get("/api/skills", wrap(getSkills(services)));
   app.post("/api/skills", wrap(createSkill(services)));
@@ -80,8 +71,10 @@ export async function buildRouter(services: AppServices): Promise<Express> {
   app.post(
     "/api/activities",
     validateCreateActivity(),
-    wrap(createActivity(services))
+    wrap(createActivity(services)),
   );
+
+  app.get("/api/photos/upload-url", wrap(requestUploadUrl(services)));
 
   app.get("/health", wrap(healthCheck(services)));
 

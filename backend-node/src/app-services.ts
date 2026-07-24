@@ -13,12 +13,15 @@ import logger from "app/utils/logger";
 import { BlobStorage } from "./storages/blob/BlobStorage";
 import { AzureBlobStorage } from "./storages/blob/AzureBlobStorage";
 import { MockBlobStorage } from "./storages/blob/MockBlobStorage";
-import { createAuthMediaClient, MediaAuthClient } from "./utils/auth-media-client";
+import {
+  createAuthMediaClient,
+  MediaAuthClient,
+} from "./utils/auth-media-client";
 
 export type AppServices = {
   appConfig: AppConfig;
   storages: Storages;
-  mediaAuthClient: MediaAuthClient
+  mediaAuthClient: MediaAuthClient;
 };
 
 export type Storages = {
@@ -41,7 +44,7 @@ export const appServiceBuilder = async (): Promise<AppServices> => {
     await startStorages(storages);
   }
   BlobServiceClient.fromConnectionString(appConfig.BlobConnection);
-  const mediaAuthClient = createAuthMediaClient(appConfig.goGrpc)
+  const mediaAuthClient = createAuthMediaClient(appConfig.goGrpc);
   return {
     appConfig,
     storages,
@@ -55,6 +58,9 @@ const startStorages = async (storages: Storages) => {
 
   // Note: If you need to guarantee container creation on system start,
   // you could invoke a initialization method on storages.blobStorage here.
+  if (storages.blobStorage) {
+    await storages.blobStorage.init();
+  }
 };
 
 const createStorages = (config: AppConfig): Storages => {
@@ -64,7 +70,12 @@ const createStorages = (config: AppConfig): Storages => {
   const blobServiceClient = BlobServiceClient.fromConnectionString(
     config.BlobConnection,
   );
-  const blobStorage = new AzureBlobStorage(blobServiceClient);
+
+  const blobStorage = new AzureBlobStorage(
+    config.BlobConnection,
+    blobServiceClient.accountName,
+    config.AccountKey,
+  );
 
   // Pass blobStorage down into DbStorage drivers if they require relational linking
   const skillsStorage = new SkillsDbStorage(knex);

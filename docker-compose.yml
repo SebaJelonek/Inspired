@@ -45,6 +45,7 @@ services:
         "0.0.0.0",
         "--tableHost",
         "0.0.0.0",
+        "--skipApiVersionCheck",
       ]
     networks:
       - inspired-network
@@ -80,8 +81,8 @@ services:
       context: ./backend-go
       dockerfile: Dockerfile
     ports:
-        - "8080:8080"
-        - "50051:50051" #gRPC port
+      - "8080:8080"
+      - "50051:50051" #gRPC port
     env_file:
       - ./.env.go
     networks:

@@ -16,6 +16,7 @@
       "supportsTablet": true
     },
     "android": {
+      "usesCleartextTraffic": true,
       "adaptiveIcon": {
         "foregroundImage": "",
         "backgroundColor": "#ffffff"
@@ -23,6 +24,7 @@
       "edgeToEdgeEnabled": true,
       "package": "com.anonymous.ReactNativeInspiredMindsClone"
     },
+    "expo": { "newArchEnabled": true },
     "web": {
       "favicon": ""
     }

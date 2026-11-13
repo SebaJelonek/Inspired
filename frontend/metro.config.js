@@ -1,21 +1,23 @@
 const { getDefaultConfig } = require("expo/metro-config");
-const { withNativeWind } = require('nativewind/metro');
+const { withNativeWind } = require("nativewind/metro");
 
+// 1. Fetch default Expo config first
 const config = getDefaultConfig(__dirname);
 
-// SVG transformer
+const { transformer, resolver } = config;
+
+// 2. Configure SVG Transformer correctly
 config.transformer = {
-  ...config.transformer,
+  ...transformer,
   babelTransformerPath: require.resolve("react-native-svg-transformer"),
-  // Add this for better Reanimated support
   unstable_allowRequireContext: true,
 };
 
-// Resolver for SVG
 config.resolver = {
-  ...config.resolver,
-  assetExts: config.resolver.assetExts.filter((ext) => ext !== "svg"),
-  sourceExts: [...config.resolver.sourceExts, "svg"],
+  ...resolver,
+  assetExts: resolver.assetExts.filter((ext) => ext !== "svg"),
+  sourceExts: [...resolver.sourceExts, "svg"],
 };
 
-module.exports = withNativeWind(config, { input: './style.css' });
+// 3. Wrap with NativeWind LAST
+module.exports = withNativeWind(config, { input: "./style.css" });

@@ -6,15 +6,15 @@ import (
 	"github.com/SebaJelonek/Inspired/jwt"
 )
 
-func GeneratePayload(userId int32, tokenType string) jwt.Payload {
+func GeneratePayload(userId int32, tokenType jwt.TokenType) jwt.Payload {
 	var expire int64
 	issuedAt := time.Now().UnixMilli()
 	user := int(userId)
 
 	switch tokenType {
-	case "auth":
+	case jwt.Auth:
 		expire = issuedAt + time.Now().Add(time.Hour/2).UnixMilli()
-	case "session":
+	case jwt.Session:
 		expire = issuedAt + time.Now().AddDate(0, 0, 30).UnixMilli()
 	}
 

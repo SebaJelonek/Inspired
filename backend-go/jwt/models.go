@@ -1,6 +1,16 @@
 package jwt
 
-import "os"
+import (
+	"fmt"
+	"os"
+)
+
+type TokenType string
+
+const (
+	Auth    TokenType = "auth"
+	Session TokenType = "session"
+)
 
 type Payload struct {
 	UserID     int   `json:"uid"`
@@ -22,14 +32,22 @@ func GetHeader() Header {
 	return header
 }
 
-func GetSecret(tokenType string) string {
-	var secret string
+func GetSecret(tokenType TokenType) (string, error) {
+	var envVar string
 
 	switch tokenType {
-	case "auth":
-		secret = os.Getenv("JWT_AUTH_SECRET")
-	case "session":
-		secret = os.Getenv("JWT_SESSION_SECRET")
+	case Auth:
+		envVar = "JWT_AUTH_SECRET"
+	case Session:
+		envVar = "JWT_SESSION_SECRET"
+	default:
+		return "", fmt.Errorf("wrong token type")
 	}
-	return secret
+
+	secret := os.Getenv(envVar)
+	if secret == "" {
+		return "", fmt.Errorf("%s is empty", envVar)
+	}
+
+	return secret, nil
 }

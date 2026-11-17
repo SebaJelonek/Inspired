@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-func Validate(jwt string, tokenType string) (bool, int, error) {
+func Validate(jwt string, tokenType TokenType) (bool, int, error) { //return isValid, userId, error
 	var userID int = 0
 	var secret string
 
@@ -64,14 +64,14 @@ func Validate(jwt string, tokenType string) (bool, int, error) {
 	}
 
 	if header.Alg != "HS256" { //wrong algo
-		return false, userID, err
+		return false, userID, fmt.Errorf("unsupported algorithm: %s", header.Alg)
 	}
 
 	if payload.Expiration < time.Now().UnixMilli() { //token expired
-		return false, userID, err
+		return false, userID, fmt.Errorf("token expired")
 	}
 
-	secret = GetSecret(tokenType)
+	secret, err = GetSecret(tokenType)
 	signatureCheck := []byte(headerStringEncoded + "." + payloadStringEncoded)
 	hmacNew := hmac.New(sha256.New, []byte(secret))
 	hmacNew.Write(signatureCheck)

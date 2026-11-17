@@ -6,9 +6,15 @@ option go_package = "github.com/SebaJelonek/Inspired/backend-go/gen/media/v1;med
 
 // Service for media processing and authentication tasks
 service MediaService {
-  rpc ProcessImage (ProcessImageRequest) returns (ProcessImageResponse);
-  rpc JwtGenerate (JwtGenerateRequest) returns (JwtGenerateResponse);
-  rpc JwtValidate (JwtValidateRequest) returns (JwtValidateResponse);
+  rpc ProcessImage(ProcessImageRequest) returns (ProcessImageResponse);
+  rpc JwtGenerate(JwtGenerateRequest) returns (JwtGenerateResponse);
+  rpc JwtValidate(JwtValidateRequest) returns (JwtValidateResponse);
+}
+
+enum TokenType {
+  TOKEN_TYPE_UNSPECIFIED = 0;
+  TOKEN_TYPE_AUTH = 1;
+  TOKEN_TYPE_SESSION = 2;
 }
 
 message ProcessImageRequest {
@@ -25,20 +31,20 @@ message ProcessImageResponse {
 }
 
 message JwtGenerateRequest {
-    int32 user_id = 1;
-    string token_type = 2;
+  int32 user_id = 1;
+  TokenType token_type = 2;
 }
 
 message JwtGenerateResponse {
-    string token = 1;
+  string token = 1;
 }
 
 message JwtValidateRequest {
-    string token = 1;
-    string token_type = 2;
+  string token = 1;
+  TokenType token_type = 2;
 }
 
 message JwtValidateResponse {
-    bool is_valid = 1;
-    int32 user_id = 2;
+  bool is_valid = 1;
+  int32 user_id = 2;
 }

@@ -7,6 +7,6 @@
     "node:test": "npm run test --prefix backend-node",
     "proto": "npm run proto:go && npm run proto:ts",
     "proto:go": "protoc --proto_path=. --go_out=./backend-go --go_opt=module=github.com/SebaJelonek/Inspired/backend-go --go-grpc_out=./backend-go --go-grpc_opt=module=github.com/SebaJelonek/Inspired/backend-go proto/media/v1/auth_media.proto",
-    "proto:ts": "protoc --proto_path=. --plugin=protoc-gen-ts_proto=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=backend-node/src/gen --ts_proto_opt=outputServices=grpc-js,env=node,esModuleInterop=true proto/media/v1/auth_media.proto"
+    "proto:ts": "protoc --proto_path=. --plugin=protoc-gen-ts_proto=./backend-node/node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=backend-node/src/gen --ts_proto_opt=outputServices=grpc-js,env=node,esModuleInterop=true proto/media/v1/auth_media.proto"
   }
 }

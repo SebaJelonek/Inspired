@@ -3,13 +3,15 @@ package jwt
 import (
 	"fmt"
 	"os"
+
+	mediav1 "github.com/SebaJelonek/Inspired/gen/media/v1"
 )
 
-type TokenType string
+type TokenType = mediav1.TokenType
 
 const (
-	Auth    TokenType = "auth"
-	Session TokenType = "session"
+	Auth    = mediav1.TokenType_TOKEN_TYPE_AUTH
+	Session = mediav1.TokenType_TOKEN_TYPE_SESSION
 )
 
 type Payload struct {

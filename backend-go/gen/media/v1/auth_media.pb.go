@@ -21,6 +21,55 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type TokenType int32
+
+const (
+	TokenType_TOKEN_TYPE_UNSPECIFIED TokenType = 0
+	TokenType_TOKEN_TYPE_AUTH        TokenType = 1
+	TokenType_TOKEN_TYPE_SESSION     TokenType = 2
+)
+
+// Enum value maps for TokenType.
+var (
+	TokenType_name = map[int32]string{
+		0: "TOKEN_TYPE_UNSPECIFIED",
+		1: "TOKEN_TYPE_AUTH",
+		2: "TOKEN_TYPE_SESSION",
+	}
+	TokenType_value = map[string]int32{
+		"TOKEN_TYPE_UNSPECIFIED": 0,
+		"TOKEN_TYPE_AUTH":        1,
+		"TOKEN_TYPE_SESSION":     2,
+	}
+)
+
+func (x TokenType) Enum() *TokenType {
+	p := new(TokenType)
+	*p = x
+	return p
+}
+
+func (x TokenType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (TokenType) Descriptor() protoreflect.EnumDescriptor {
+	return file_proto_media_v1_auth_media_proto_enumTypes[0].Descriptor()
+}
+
+func (TokenType) Type() protoreflect.EnumType {
+	return &file_proto_media_v1_auth_media_proto_enumTypes[0]
+}
+
+func (x TokenType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use TokenType.Descriptor instead.
+func (TokenType) EnumDescriptor() ([]byte, []int) {
+	return file_proto_media_v1_auth_media_proto_rawDescGZIP(), []int{0}
+}
+
 type ProcessImageRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ImageId       string                 `protobuf:"bytes,1,opt,name=image_id,json=imageId,proto3" json:"image_id,omitempty"`
@@ -152,7 +201,7 @@ func (x *ProcessImageResponse) GetErrorMessage() string {
 type JwtGenerateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	TokenType     string                 `protobuf:"bytes,2,opt,name=token_type,json=tokenType,proto3" json:"token_type,omitempty"`
+	TokenType     TokenType              `protobuf:"varint,2,opt,name=token_type,json=tokenType,proto3,enum=media.v1.TokenType" json:"token_type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -194,11 +243,11 @@ func (x *JwtGenerateRequest) GetUserId() int32 {
 	return 0
 }
 
-func (x *JwtGenerateRequest) GetTokenType() string {
+func (x *JwtGenerateRequest) GetTokenType() TokenType {
 	if x != nil {
 		return x.TokenType
 	}
-	return ""
+	return TokenType_TOKEN_TYPE_UNSPECIFIED
 }
 
 type JwtGenerateResponse struct {
@@ -248,7 +297,7 @@ func (x *JwtGenerateResponse) GetToken() string {
 type JwtValidateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
-	TokenType     string                 `protobuf:"bytes,2,opt,name=token_type,json=tokenType,proto3" json:"token_type,omitempty"`
+	TokenType     TokenType              `protobuf:"varint,2,opt,name=token_type,json=tokenType,proto3,enum=media.v1.TokenType" json:"token_type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -290,11 +339,11 @@ func (x *JwtValidateRequest) GetToken() string {
 	return ""
 }
 
-func (x *JwtValidateRequest) GetTokenType() string {
+func (x *JwtValidateRequest) GetTokenType() TokenType {
 	if x != nil {
 		return x.TokenType
 	}
-	return ""
+	return TokenType_TOKEN_TYPE_UNSPECIFIED
 }
 
 type JwtValidateResponse struct {
@@ -362,20 +411,24 @@ const file_proto_media_v1_auth_media_proto_rawDesc = "" +
 	"\x14ProcessImageResponse\x12,\n" +
 	"\x12processed_blob_url\x18\x01 \x01(\tR\x10processedBlobUrl\x12\x18\n" +
 	"\asuccess\x18\x02 \x01(\bR\asuccess\x12#\n" +
-	"\rerror_message\x18\x03 \x01(\tR\ferrorMessage\"L\n" +
+	"\rerror_message\x18\x03 \x01(\tR\ferrorMessage\"a\n" +
 	"\x12JwtGenerateRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x05R\x06userId\x12\x1d\n" +
+	"\auser_id\x18\x01 \x01(\x05R\x06userId\x122\n" +
 	"\n" +
-	"token_type\x18\x02 \x01(\tR\ttokenType\"+\n" +
+	"token_type\x18\x02 \x01(\x0e2\x13.media.v1.TokenTypeR\ttokenType\"+\n" +
 	"\x13JwtGenerateResponse\x12\x14\n" +
-	"\x05token\x18\x01 \x01(\tR\x05token\"I\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\"^\n" +
 	"\x12JwtValidateRequest\x12\x14\n" +
-	"\x05token\x18\x01 \x01(\tR\x05token\x12\x1d\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\x122\n" +
 	"\n" +
-	"token_type\x18\x02 \x01(\tR\ttokenType\"I\n" +
+	"token_type\x18\x02 \x01(\x0e2\x13.media.v1.TokenTypeR\ttokenType\"I\n" +
 	"\x13JwtValidateResponse\x12\x19\n" +
 	"\bis_valid\x18\x01 \x01(\bR\aisValid\x12\x17\n" +
-	"\auser_id\x18\x02 \x01(\x05R\x06userId2\xf5\x01\n" +
+	"\auser_id\x18\x02 \x01(\x05R\x06userId*T\n" +
+	"\tTokenType\x12\x1a\n" +
+	"\x16TOKEN_TYPE_UNSPECIFIED\x10\x00\x12\x13\n" +
+	"\x0fTOKEN_TYPE_AUTH\x10\x01\x12\x16\n" +
+	"\x12TOKEN_TYPE_SESSION\x10\x022\xf5\x01\n" +
 	"\fMediaService\x12M\n" +
 	"\fProcessImage\x12\x1d.media.v1.ProcessImageRequest\x1a\x1e.media.v1.ProcessImageResponse\x12J\n" +
 	"\vJwtGenerate\x12\x1c.media.v1.JwtGenerateRequest\x1a\x1d.media.v1.JwtGenerateResponse\x12J\n" +
@@ -393,27 +446,31 @@ func file_proto_media_v1_auth_media_proto_rawDescGZIP() []byte {
 	return file_proto_media_v1_auth_media_proto_rawDescData
 }
 
+var file_proto_media_v1_auth_media_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_proto_media_v1_auth_media_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_proto_media_v1_auth_media_proto_goTypes = []any{
-	(*ProcessImageRequest)(nil),  // 0: media.v1.ProcessImageRequest
-	(*ProcessImageResponse)(nil), // 1: media.v1.ProcessImageResponse
-	(*JwtGenerateRequest)(nil),   // 2: media.v1.JwtGenerateRequest
-	(*JwtGenerateResponse)(nil),  // 3: media.v1.JwtGenerateResponse
-	(*JwtValidateRequest)(nil),   // 4: media.v1.JwtValidateRequest
-	(*JwtValidateResponse)(nil),  // 5: media.v1.JwtValidateResponse
+	(TokenType)(0),               // 0: media.v1.TokenType
+	(*ProcessImageRequest)(nil),  // 1: media.v1.ProcessImageRequest
+	(*ProcessImageResponse)(nil), // 2: media.v1.ProcessImageResponse
+	(*JwtGenerateRequest)(nil),   // 3: media.v1.JwtGenerateRequest
+	(*JwtGenerateResponse)(nil),  // 4: media.v1.JwtGenerateResponse
+	(*JwtValidateRequest)(nil),   // 5: media.v1.JwtValidateRequest
+	(*JwtValidateResponse)(nil),  // 6: media.v1.JwtValidateResponse
 }
 var file_proto_media_v1_auth_media_proto_depIdxs = []int32{
-	0, // 0: media.v1.MediaService.ProcessImage:input_type -> media.v1.ProcessImageRequest
-	2, // 1: media.v1.MediaService.JwtGenerate:input_type -> media.v1.JwtGenerateRequest
-	4, // 2: media.v1.MediaService.JwtValidate:input_type -> media.v1.JwtValidateRequest
-	1, // 3: media.v1.MediaService.ProcessImage:output_type -> media.v1.ProcessImageResponse
-	3, // 4: media.v1.MediaService.JwtGenerate:output_type -> media.v1.JwtGenerateResponse
-	5, // 5: media.v1.MediaService.JwtValidate:output_type -> media.v1.JwtValidateResponse
-	3, // [3:6] is the sub-list for method output_type
-	0, // [0:3] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0, // 0: media.v1.JwtGenerateRequest.token_type:type_name -> media.v1.TokenType
+	0, // 1: media.v1.JwtValidateRequest.token_type:type_name -> media.v1.TokenType
+	1, // 2: media.v1.MediaService.ProcessImage:input_type -> media.v1.ProcessImageRequest
+	3, // 3: media.v1.MediaService.JwtGenerate:input_type -> media.v1.JwtGenerateRequest
+	5, // 4: media.v1.MediaService.JwtValidate:input_type -> media.v1.JwtValidateRequest
+	2, // 5: media.v1.MediaService.ProcessImage:output_type -> media.v1.ProcessImageResponse
+	4, // 6: media.v1.MediaService.JwtGenerate:output_type -> media.v1.JwtGenerateResponse
+	6, // 7: media.v1.MediaService.JwtValidate:output_type -> media.v1.JwtValidateResponse
+	5, // [5:8] is the sub-list for method output_type
+	2, // [2:5] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_proto_media_v1_auth_media_proto_init() }
@@ -426,13 +483,14 @@ func file_proto_media_v1_auth_media_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_media_v1_auth_media_proto_rawDesc), len(file_proto_media_v1_auth_media_proto_rawDesc)),
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_proto_media_v1_auth_media_proto_goTypes,
 		DependencyIndexes: file_proto_media_v1_auth_media_proto_depIdxs,
+		EnumInfos:         file_proto_media_v1_auth_media_proto_enumTypes,
 		MessageInfos:      file_proto_media_v1_auth_media_proto_msgTypes,
 	}.Build()
 	File_proto_media_v1_auth_media_proto = out.File

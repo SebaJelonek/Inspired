@@ -24,6 +24,7 @@ export const Learn: React.FC = () => {
 
   const handlePickImage = async () => {
     const asset = await pickImage();
+
     if (asset) {
       setSelectedAsset(asset);
     }
@@ -38,6 +39,7 @@ export const Learn: React.FC = () => {
         setSelectedAsset(null);
       },
       onError: (error) => {
+        console.log(`upload error: ${error}`);
         alert(`Upload error: ${error.message}`);
       },
     });

@@ -4,7 +4,9 @@ import { Platform } from "react-native";
 
 // Adjust according to your local backend IP setup
 const API_BASE_URL =
-  Platform.OS === "android" ? "http://10.0.2.2:3000" : "http://localhost:3000";
+  Platform.OS === "android"
+    ? "http://192.168.1.238:3000"
+    : "http://localhost:3000";
 
 export interface SasResponse {
   uploadUrl: string; // The presigned Azure SAS URL
@@ -47,10 +49,14 @@ export const getSasUrl = async (fileName: string): Promise<SasResponse> => {
     headers: { "Content-Type": "application/json" },
     // body: JSON.stringify({ fileName }),
   });
+
   const result = await res.json();
-  console.log(result);
-  if (!res.ok) throw new Error("Failed to get upload URL");
-  return res.json();
+
+  if (!res.ok) {
+    console.log(`Failed to get upload URL: ${result.data.uploadUrl}`);
+    throw new Error("Failed to get upload URL");
+  }
+  return result.data;
 };
 
 // 3. Upload raw binary directly to Azure Blob Storage
@@ -61,6 +67,7 @@ export const uploadToAzureBlob = async (
 ) => {
   // Convert local file URI to Blob/ArrayBuffer for fetch
   const response = await fetch(imageUri);
+
   const blob = await response.blob();
 
   const azureResponse = await fetch(sasUrl, {

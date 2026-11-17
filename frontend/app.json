@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ReactNativeInspiredMindsClone",
-    "slug": "ReactNativeInspiredMindsClone",
+    "name": "Inspired",
+    "slug": "Inspired",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "",
@@ -22,7 +22,7 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.anonymous.ReactNativeInspiredMindsClone"
+      "package": "com.anonymous.Inspired"
     },
     "expo": { "newArchEnabled": true },
     "web": {

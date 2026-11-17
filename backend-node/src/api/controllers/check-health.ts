@@ -20,6 +20,7 @@ export function healthCheck({ appConfig, storages }: AppServices) {
         blob: true,
       },
     };
+    logger.info(data);
     res.status(200).send(data);
   };
 }

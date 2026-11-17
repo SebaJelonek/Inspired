@@ -47,7 +47,7 @@ Building this has been a deep dive into backend orchestration and system design.
 - [ ] Implement Activities Domain (Soft Deletes, Delta Sync)
 - [ ] Implement Learning Domain (Soft Deletes, Delta Sync)
 - [ ] Complete Mobile Client Integration (React Native)
-- [ ] Cloud Deployment (AWS/Azure)
+- [ ] Cloud Deployment (Azure)
 
 ## Acknowledgements
 

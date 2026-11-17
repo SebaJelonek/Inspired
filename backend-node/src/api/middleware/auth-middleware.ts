@@ -23,17 +23,10 @@ export function authMiddleware({ mediaAuthClient }: AppServices) {
     }
 
     // 2. Validate token presence
-    if (!token) {
+    if (!token || !tokenType) {
       throw new HttpErrorResponse(401, {
-        message: "Missing auth and session token",
+        message: "Missing authentication credentials",
         kind: "UNAUTHORIZED",
-      });
-    }
-
-    if (!tokenType) {
-      throw new HttpErrorResponse(400, {
-        message: "The token type is missing",
-        kind: "BAD_REQUEST",
       });
     }
 

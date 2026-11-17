@@ -29,9 +29,15 @@ export function requestUploadUrl(services: AppServices) {
 
     const publicHost = services.appConfig.storageHost || "192.168.1.238:10000";
     const uploadUrl = rawUploadUrl.replace("http://azurite:10000", publicHost);
+    // **
+    // is this going to be necessary on production?
+    // idk yet, i believe i will have a possibility to check
+    // atm due to the fact that i am debuging it via adb azurite is not recognized
+    // i would assume that it will be once i go production but we will see
+    //
+    //
+    // **
 
-    logger.info(`raw upload url: ${rawUploadUrl}\n`);
-    logger.info(`upload url: ${uploadUrl}\n`);
     const data = { photoId, blobName, uploadUrl };
     res.status(200).json({ success: true, data });
   });

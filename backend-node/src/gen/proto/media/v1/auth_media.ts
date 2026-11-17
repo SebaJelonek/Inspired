@@ -21,6 +21,45 @@ import {
 
 export const protobufPackage = "media.v1";
 
+export enum TokenType {
+  TOKEN_TYPE_UNSPECIFIED = 0,
+  TOKEN_TYPE_AUTH = 1,
+  TOKEN_TYPE_SESSION = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function tokenTypeFromJSON(object: any): TokenType {
+  switch (object) {
+    case 0:
+    case "TOKEN_TYPE_UNSPECIFIED":
+      return TokenType.TOKEN_TYPE_UNSPECIFIED;
+    case 1:
+    case "TOKEN_TYPE_AUTH":
+      return TokenType.TOKEN_TYPE_AUTH;
+    case 2:
+    case "TOKEN_TYPE_SESSION":
+      return TokenType.TOKEN_TYPE_SESSION;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return TokenType.UNRECOGNIZED;
+  }
+}
+
+export function tokenTypeToJSON(object: TokenType): string {
+  switch (object) {
+    case TokenType.TOKEN_TYPE_UNSPECIFIED:
+      return "TOKEN_TYPE_UNSPECIFIED";
+    case TokenType.TOKEN_TYPE_AUTH:
+      return "TOKEN_TYPE_AUTH";
+    case TokenType.TOKEN_TYPE_SESSION:
+      return "TOKEN_TYPE_SESSION";
+    case TokenType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 export interface ProcessImageRequest {
   imageId: string;
   blobUrl: string;
@@ -36,7 +75,7 @@ export interface ProcessImageResponse {
 
 export interface JwtGenerateRequest {
   userId: number;
-  tokenType: string;
+  tokenType: TokenType;
 }
 
 export interface JwtGenerateResponse {
@@ -45,7 +84,7 @@ export interface JwtGenerateResponse {
 
 export interface JwtValidateRequest {
   token: string;
-  tokenType: string;
+  tokenType: TokenType;
 }
 
 export interface JwtValidateResponse {
@@ -278,7 +317,7 @@ export const ProcessImageResponse: MessageFns<ProcessImageResponse> = {
 };
 
 function createBaseJwtGenerateRequest(): JwtGenerateRequest {
-  return { userId: 0, tokenType: "" };
+  return { userId: 0, tokenType: 0 };
 }
 
 export const JwtGenerateRequest: MessageFns<JwtGenerateRequest> = {
@@ -286,8 +325,8 @@ export const JwtGenerateRequest: MessageFns<JwtGenerateRequest> = {
     if (message.userId !== 0) {
       writer.uint32(8).int32(message.userId);
     }
-    if (message.tokenType !== "") {
-      writer.uint32(18).string(message.tokenType);
+    if (message.tokenType !== 0) {
+      writer.uint32(16).int32(message.tokenType);
     }
     return writer;
   },
@@ -308,11 +347,11 @@ export const JwtGenerateRequest: MessageFns<JwtGenerateRequest> = {
           continue;
         }
         case 2: {
-          if (tag !== 18) {
+          if (tag !== 16) {
             break;
           }
 
-          message.tokenType = reader.string();
+          message.tokenType = reader.int32() as any;
           continue;
         }
       }
@@ -332,10 +371,10 @@ export const JwtGenerateRequest: MessageFns<JwtGenerateRequest> = {
         ? globalThis.Number(object.user_id)
         : 0,
       tokenType: isSet(object.tokenType)
-        ? globalThis.String(object.tokenType)
+        ? tokenTypeFromJSON(object.tokenType)
         : isSet(object.token_type)
-        ? globalThis.String(object.token_type)
-        : "",
+        ? tokenTypeFromJSON(object.token_type)
+        : 0,
     };
   },
 
@@ -344,8 +383,8 @@ export const JwtGenerateRequest: MessageFns<JwtGenerateRequest> = {
     if (message.userId !== 0) {
       obj.userId = Math.round(message.userId);
     }
-    if (message.tokenType !== "") {
-      obj.tokenType = message.tokenType;
+    if (message.tokenType !== 0) {
+      obj.tokenType = tokenTypeToJSON(message.tokenType);
     }
     return obj;
   },
@@ -356,7 +395,7 @@ export const JwtGenerateRequest: MessageFns<JwtGenerateRequest> = {
   fromPartial<I extends Exact<DeepPartial<JwtGenerateRequest>, I>>(object: I): JwtGenerateRequest {
     const message = createBaseJwtGenerateRequest();
     message.userId = object.userId ?? 0;
-    message.tokenType = object.tokenType ?? "";
+    message.tokenType = object.tokenType ?? 0;
     return message;
   },
 };
@@ -420,7 +459,7 @@ export const JwtGenerateResponse: MessageFns<JwtGenerateResponse> = {
 };
 
 function createBaseJwtValidateRequest(): JwtValidateRequest {
-  return { token: "", tokenType: "" };
+  return { token: "", tokenType: 0 };
 }
 
 export const JwtValidateRequest: MessageFns<JwtValidateRequest> = {
@@ -428,8 +467,8 @@ export const JwtValidateRequest: MessageFns<JwtValidateRequest> = {
     if (message.token !== "") {
       writer.uint32(10).string(message.token);
     }
-    if (message.tokenType !== "") {
-      writer.uint32(18).string(message.tokenType);
+    if (message.tokenType !== 0) {
+      writer.uint32(16).int32(message.tokenType);
     }
     return writer;
   },
@@ -450,11 +489,11 @@ export const JwtValidateRequest: MessageFns<JwtValidateRequest> = {
           continue;
         }
         case 2: {
-          if (tag !== 18) {
+          if (tag !== 16) {
             break;
           }
 
-          message.tokenType = reader.string();
+          message.tokenType = reader.int32() as any;
           continue;
         }
       }
@@ -470,10 +509,10 @@ export const JwtValidateRequest: MessageFns<JwtValidateRequest> = {
     return {
       token: isSet(object.token) ? globalThis.String(object.token) : "",
       tokenType: isSet(object.tokenType)
-        ? globalThis.String(object.tokenType)
+        ? tokenTypeFromJSON(object.tokenType)
         : isSet(object.token_type)
-        ? globalThis.String(object.token_type)
-        : "",
+        ? tokenTypeFromJSON(object.token_type)
+        : 0,
     };
   },
 
@@ -482,8 +521,8 @@ export const JwtValidateRequest: MessageFns<JwtValidateRequest> = {
     if (message.token !== "") {
       obj.token = message.token;
     }
-    if (message.tokenType !== "") {
-      obj.tokenType = message.tokenType;
+    if (message.tokenType !== 0) {
+      obj.tokenType = tokenTypeToJSON(message.tokenType);
     }
     return obj;
   },
@@ -494,7 +533,7 @@ export const JwtValidateRequest: MessageFns<JwtValidateRequest> = {
   fromPartial<I extends Exact<DeepPartial<JwtValidateRequest>, I>>(object: I): JwtValidateRequest {
     const message = createBaseJwtValidateRequest();
     message.token = object.token ?? "";
-    message.tokenType = object.tokenType ?? "";
+    message.tokenType = object.tokenType ?? 0;
     return message;
   },
 };

@@ -3,12 +3,13 @@ import { ServiceError } from "@grpc/grpc-js";
 import { AppServices } from "app/app-services";
 import { HttpErrorResponse } from "app/utils/errors";
 import { GrpcErrorResponse } from "app/utils/grpc-errors"; // your gRPC error transformer
+import { TokenType } from "app/gen/proto/media/v1/auth_media";
 import { wrap } from "app/utils/express";
 
 export function authMiddleware({ mediaAuthClient }: AppServices) {
   return wrap(async (req: Request, res: Response, next: NextFunction) => {
     let token: string | undefined;
-    let tokenType: "auth" | "session" | undefined;
+    let tokenType: TokenType | undefined;
 
     const authHeader = req.headers.authorization;
     const cookieToken = req.cookies?.session_token;
@@ -16,10 +17,10 @@ export function authMiddleware({ mediaAuthClient }: AppServices) {
     // 1. Extract token and determine its type
     if (authHeader?.startsWith("Bearer ")) {
       token = authHeader.split(" ")[1];
-      tokenType = "auth";
+      tokenType = TokenType.TOKEN_TYPE_AUTH;
     } else if (cookieToken) {
       token = cookieToken;
-      tokenType = "session";
+      tokenType = TokenType.TOKEN_TYPE_SESSION;
     }
 
     // 2. Validate token presence

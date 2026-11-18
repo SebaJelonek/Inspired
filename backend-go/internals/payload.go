@@ -13,11 +13,10 @@ func GeneratePayload(userId int32, tokenType jwt.TokenType) jwt.Payload {
 
 	switch tokenType {
 	case jwt.Auth:
-		expire = issuedAt + time.Now().Add(time.Hour/2).UnixMilli()
+		expire = time.Now().Add(time.Hour / 2).UnixMilli()
 	case jwt.Session:
-		expire = issuedAt + time.Now().AddDate(0, 0, 30).UnixMilli()
+		expire = time.Now().AddDate(0, 0, 30).UnixMilli()
 	}
-
 	payload := jwt.Payload{
 		UserID:     user,
 		IssuedAt:   issuedAt,
